@@ -24,7 +24,7 @@ namespace Botsuana.Covid19.Controllers
         {
             try
             {
-                return contexto.Vacinado.ToList();
+                return contexto.Vacinado.Include(vacinado => vacinado.dose).ToList();
             }
             catch(Exception ex)
             {
@@ -40,6 +40,7 @@ namespace Botsuana.Covid19.Controllers
             {
                 var dose = contexto.Dose.Where(x => x.Identificador == vacinado.dose.Identificador).FirstOrDefault();
                 vacinado.dose = dose;
+                vacinado.dataHora = DateTime.Now;
                 contexto.Vacinado.Add(vacinado);
                 contexto.SaveChanges();
                 return true;

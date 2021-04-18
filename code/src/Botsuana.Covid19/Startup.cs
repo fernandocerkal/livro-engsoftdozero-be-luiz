@@ -21,6 +21,7 @@ namespace Botsuana.Covid19
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();            
+            services.AddCors();
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile($"appsettings.Development.json", optional: true, reloadOnChange: true);
@@ -43,6 +44,12 @@ namespace Botsuana.Covid19
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseCors(b => b                 
+                 .WithOrigins(new string[] { "http://localhost:4200" })                 
+                 .AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .AllowCredentials()
+            );
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

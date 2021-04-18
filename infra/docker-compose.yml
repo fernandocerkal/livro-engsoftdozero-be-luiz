@@ -1,0 +1,32 @@
+version: '3'
+ 
+services:
+  local-postgres-compose:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "Postgres2019!"
+    ports:
+      - "15432:5432"
+   #volumes:
+     #- /Users/luizsantos/postgredata:/var/lib/postgresql/data
+ 
+    networks:
+      - postgres-compose-network
+    restart: always
+ 
+  local-pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "livro@engsoftdozero.com"
+      PGADMIN_DEFAULT_PASSWORD: "EngSoftDoZero#"
+    ports:
+      - "16543:80"
+    depends_on:
+      - local-postgres-compose
+    networks:
+      - postgres-compose-network
+    restart: always
+ 
+networks:
+ postgres-compose-network:
+   driver: bridge
